@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CHANDRA! Futsal Arena — Sewa Lapangan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="field-bg">
+      <svg width="100%" height="100%">
+        <circle
+          cx="50%"
+          cy="15%"
+          r="140"
+          fill="none"
+          stroke="#0B3D2E"
+          stroke-width="2"
+        />
+        <circle
+          cx="90%"
+          cy="80%"
+          r="200"
+          fill="none"
+          stroke="#0B3D2E"
+          stroke-width="2"
+        />
+      </svg>
+    </div>
+
+    <header class="topbar">
+      <div class="brand">
+        <div class="ball">⚽</div>
+        <div class="name">CHANDRA! <span>ARENA</span></div>
+      </div>
+      <div class="topbar-right">
+        <nav class="tabs">
+          <button class="tab-btn active" data-view="schedule">
+            1. Cek Jadwal
+          </button>
+          <button class="tab-btn" data-view="booking">
+            2. Formulir Penyewaan
+          </button>
+          <button class="tab-btn" data-view="admin">Admin</button>
+        </nav>
+        <div class="account-chip" id="accountChip"></div>
+      </div>
+    </header>
+
+    <main>
+      <!-- ===================== STEP 1: CEK JADWAL ===================== -->
+      <section id="view-schedule" class="view active">
+        <div class="hero">
+          <div>
+            <span
+              class="eyebrow"
+              style="background: rgba(255, 255, 255, 0.12); color: var(--lime)"
+              >Lapangan A · Indoor Vinyl</span
+            >
+            <h1>Booking Jam Main<br />Tanpa Ribet</h1>
+            <p>
+              Cek jadwal kosong, pilih jam, lalu lanjutkan ke formulir penyewaan
+              untuk mengisi data dan bukti bayar.
+            </p>
+          </div>
+          <div class="hero-stats">
+            <div class="stat">
+              <b id="statOpenToday">-</b><span>Slot Kosong</span>
+            </div>
+            <div class="stat"><b>08–23</b><span>Jam Operasional</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <span class="eyebrow">Langkah 1 dari 2</span>
+          <h2>Cek Jadwal Lapangan</h2>
+          <div class="sub">
+            Pilih tanggal, lalu klik jam yang masih kosong untuk melanjutkan ke
+            formulir penyewaan.
+          </div>
+
+          <div class="date-picker" id="datePicker"></div>
+
+          <div class="legend">
+            <span><i style="background: var(--green-ok)"></i>Kosong</span>
+            <span
+              ><i style="background: var(--amber)"></i>Menunggu Konfirmasi</span
+            >
+            <span><i style="background: var(--red)"></i>Sudah Disewa</span>
+          </div>
+
+          <div class="slot-grid" id="slotGrid"></div>
+
+          <div class="selection-bar">
+            <div class="info" id="selectionInfo">
+              Belum ada jam yang dipilih.
+            </div>
+            <button class="btn accent" id="goToFormBtn" disabled>
+              Lanjut ke Formulir Penyewaan →
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== STEP 2: FORMULIR PENYEWAAN ===================== -->
+      <section id="view-booking" class="view">
+        <div class="steps-track">
+          <div class="step done"><span class="num">✓</span>Cek Jadwal</div>
+          <div class="divider"></div>
+          <div class="step current">
+            <span class="num">2</span>Formulir Penyewaan
+          </div>
+        </div>
+
+        <!-- Login gate: shown only if customer not logged in -->
+        <div id="customerAuthGate" class="card login-box">
+          <div class="ball-lg">⚽</div>
+          <h2 style="text-align: center">Masuk untuk Melanjutkan</h2>
+          <div class="sub" style="text-align: center">
+            Login pengguna diperlukan sebelum mengisi formulir penyewaan.
+          </div>
+
+          <div class="auth-switch">
+            <button type="button" id="switchToLogin" class="active">
+              Masuk
+            </button>
+            <button type="button" id="switchToRegister">Daftar Akun</button>
+          </div>
+
+          <div id="loginNotice" class="notice"></div>
+
+          <form id="loginForm" class="auth-form active">
+            <div class="field">
+              <label for="loginPhone">No. WhatsApp</label>
+              <input
+                type="tel"
+                id="loginPhone"
+                placeholder="cth. 081234567890"
+                required
+              />
+            </div>
+            <div class="field">
+              <label for="loginPassword">Password</label>
+              <input type="password" id="loginPassword" required />
+            </div>
+            <button type="submit" class="btn accent wide">Masuk</button>
+          </form>
+
+          <form id="registerForm" class="auth-form">
+            <div class="field">
+              <label for="regName">Nama Lengkap</label>
+              <input
+                type="text"
+                id="regName"
+                placeholder="cth. Bagas Pratama"
+                required
+              />
+            </div>
+            <div class="field">
+              <label for="regPhone">No. WhatsApp</label>
+              <input
+                type="tel"
+                id="regPhone"
+                placeholder="cth. 081234567890"
+                required
+              />
+            </div>
+            <div class="field">
+              <label for="regPassword">Buat Password</label>
+              <input type="password" id="regPassword" required />
+            </div>
+            <button type="submit" class="btn accent wide">
+              Daftar &amp; Masuk
+            </button>
+          </form>
+        </div>
+
+        <!-- Booking form: shown only when logged in -->
+        <div id="customerBookingArea" style="display: none">
+          <div class="card">
+            <span class="eyebrow">Langkah 2 dari 2</span>
+            <h2>Formulir Penyewaan</h2>
+            <div class="sub">
+              Lengkapi detail sewa dan unggah bukti transfer untuk mengajukan
+              booking.
+            </div>
+
+            <div id="bookingNotice" class="notice"></div>
+
+            <form id="bookingForm">
+              <div class="grid2">
+                <div class="field">
+                  <label for="custName">Nama Penyewa</label>
+                  <input type="text" id="custName" required />
+                </div>
+                <div class="field">
+                  <label for="custPhone">No. WhatsApp</label>
+                  <input type="tel" id="custPhone" required />
+                </div>
+              </div>
+
+              <div class="grid2">
+                <div class="field">
+                  <label for="bookDate">Tanggal Main</label>
+                  <input type="date" id="bookDate" required />
+                </div>
+                <div class="field">
+                  <label for="bookHour">Jam Mulai</label>
+                  <select id="bookHour" required></select>
+                </div>
+              </div>
+
+              <div class="grid2">
+                <div class="field">
+                  <label for="bookDuration">Durasi Bermain</label>
+                  <select id="bookDuration" required>
+                    <option value="1">1 Jam</option>
+                    <option value="2">2 Jam</option>
+                    <option value="3">3 Jam</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="bookNotes">Catatan (opsional)</label>
+                  <input
+                    type="text"
+                    id="bookNotes"
+                    placeholder="cth. Sewa bola & rompi"
+                  />
+                </div>
+              </div>
+
+              <div class="field">
+                <label>Upload Bukti Transfer</label>
+                <div class="file-drop" id="fileDrop">
+                  <span id="fileDropLabel"
+                    >Klik untuk unggah foto / screenshot resi transfer
+                    (JPG/PNG)</span
+                  >
+                  <input
+                    type="file"
+                    id="proofInput"
+                    accept="image/*"
+                    style="display: none"
+                  />
+                  <img id="proofPreview" />
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 10px; flex-wrap: wrap">
+                <button type="button" class="btn ghost" id="backToScheduleBtn">
+                  ← Ubah Jadwal
+                </button>
+                <button type="submit" class="btn accent" id="submitBookingBtn">
+                  Kirim Pengajuan Sewa
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== ADMIN VIEW ===================== -->
+      <section id="view-admin" class="view">
+        <div id="adminLogin">
+          <div class="card login-box">
+            <div class="ball-lg">⚽</div>
+            <h2 style="text-align: center">Login Admin</h2>
+            <div class="sub" style="text-align: center">
+              Masuk untuk mengelola jadwal &amp; pesanan lapangan.
+            </div>
+            <div id="adminLoginNotice" class="notice"></div>
+            <form id="adminLoginForm">
+              <div class="field">
+                <label for="adminUserInput">Username</label>
+                <input type="text" id="adminUserInput" required />
+              </div>
+              <div class="field">
+                <label for="adminPassInput">Password</label>
+                <input type="text" id="adminPassInput" required />
+              </div>
+              <button type="submit" class="btn accent wide">Masuk</button>
+            </form>
+            <div class="hint">
+              Demo — Username: <b>admin</b> · Password: <b>admin123</b>
+            </div>
+          </div>
+        </div>
+
+        <div id="adminPanel" style="display: none">
+          <div class="topbar-admin">
+            <div>
+              <span class="eyebrow">Panel Pengelola</span>
+              <h2 style="font-size: 22px">Manajemen Jadwal &amp; Lapangan</h2>
+            </div>
+            <div style="display: flex; align-items: center; gap: 14px">
+              <span class="who">Masuk sebagai <b>admin</b></span>
+              <button class="btn ghost small" id="adminLogoutBtn">
+                Keluar
+              </button>
+            </div>
+          </div>
+
+          <div class="hero-stats" style="margin-bottom: 20px">
+            <div class="stat" style="background: var(--turf-dark)">
+              <b id="statPending">0</b><span>Menunggu</span>
+            </div>
+            <div class="stat" style="background: var(--turf-dark)">
+              <b id="statApproved">0</b><span>Disetujui</span>
+            </div>
+            <div class="stat" style="background: var(--turf-dark)">
+              <b id="statRejected">0</b><span>Ditolak</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>Daftar Pesanan</h2>
+            <div class="sub">
+              Setujui, ubah jadwal, atau batalkan pesanan penyewa.
+            </div>
+
+            <div class="filters" id="statusFilters">
+              <button data-f="all" class="active">Semua</button>
+              <button data-f="pending">Menunggu</button>
+              <button data-f="approved">Disetujui</button>
+              <button data-f="rejected">Ditolak</button>
+            </div>
+
+            <div style="overflow-x: auto">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Penyewa</th>
+                    <th>Jadwal</th>
+                    <th>Bukti Bayar</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="bookingTableBody"></tbody>
+              </table>
+            </div>
+            <div id="emptyBookings" class="empty-state" style="display: none">
+              <div
+                class="ball"
+                style="
+                  background: var(--line);
+                  border-radius: 50%;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                "
+              >
+                ⚽
+              </div>
+              Belum ada pesanan yang masuk.
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      GOL! Futsal Arena — Sistem Informasi Penyewaan Lapangan (Demo, data
+      tersimpan lokal di peramban)
+    </footer>
+
+    <!-- Edit booking modal (admin) -->
+    <div
+      id="editModal"
+      style="
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(11, 36, 26, 0.55);
+        z-index: 100;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      "
+    >
+      <div class="card" style="max-width: 420px; width: 100%; margin: 0">
+        <h2>Ubah Jadwal Pesanan</h2>
+        <div class="sub">Perbarui tanggal, jam, atau durasi pesanan ini.</div>
+        <div class="field">
+          <label>Tanggal</label>
+          <input type="date" id="editDate" />
+        </div>
+        <div class="grid2">
+          <div class="field">
+            <label>Jam Mulai</label>
+            <select id="editHour"></select>
+          </div>
+          <div class="field">
+            <label>Durasi</label>
+            <select id="editDuration">
+              <option value="1">1 Jam</option>
+              <option value="2">2 Jam</option>
+              <option value="3">3 Jam</option>
+            </select>
+          </div>
+        </div>
+        <div
+          style="
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 10px;
+          "
+        >
+          <button class="btn ghost" id="editCancelBtn">Batal</button>
+          <button class="btn accent" id="editSaveBtn">Simpan Perubahan</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
